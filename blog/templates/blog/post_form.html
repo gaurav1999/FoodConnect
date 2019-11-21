@@ -1,16 +1,22 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Blog Post</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">post</button>
-            </div>
-        </form>
-    </div>
+    {% if user.is_authenticated and user.profile.is_supplier %}
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Blog Post</legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">post</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <h1> Only Suppliers are allowed to post a food availability </h1>
+        <br>
+        <h2> Please update your profile and login again </h2>
+    {% endif %}
 {% endblock content %}
